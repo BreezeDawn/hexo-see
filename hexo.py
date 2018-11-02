@@ -104,7 +104,7 @@ class Hexo:
         tkinter.Button(self.pub_tk, text='放弃创建', command=lambda: self.pub_tk.destroy()).grid(row=11, column=2)
 
     def publish_blog(self, title_text, tags_text, cats_text):
-        title = title_text.get().replace(' ', '')
+        title = title_text.get().replace(' ', '').replace('/', '-').replace('\\', '-').replace('：', '-').replace(':', '-').replace('*', '-').replace('?', '-').replace('<', '-').replace('>', '-').replace('<', '-').replace('|', '-')
         tags = [tag for tag in tags_text.get().split(' ') if tag != '']
         cats = [cat for cat in cats_text.get().split(' ') if cat != '']
 
