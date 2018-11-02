@@ -6,31 +6,29 @@ Hexo的可视化界面，摆脱命令行。
 
 很粗糙，请见谅。
 
-![](C:\Users\Maifeel\Desktop\初始界面.png)
-
-
+![](https://img-blog.csdnimg.cn/20181103004314533.png)
 
 ## 二、功能
 
 #### 1、界面化创建文章！
 
-![](C:\Users\Maifeel\Desktop\创建文章.png)
+![](https://img-blog.csdnimg.cn/2018110300433763.png)
 
 #### 2、创建文章后可选择直接打开
 
-![](C:\Users\Maifeel\Desktop\可选打开文件.png)
+![](https://img-blog.csdnimg.cn/20181103004448727.png)
 
 #### 3、提交至远程仓库
 
-![](C:\Users\Maifeel\Desktop\提交远程仓库.png)
+![](https://img-blog.csdnimg.cn/20181103004517311.png)
 
 #### 4、清除本地public文件
 
-![](C:\Users\Maifeel\Desktop\clean.png)
+![](https://img-blog.csdnimg.cn/20181103004546939.png)
 
 #### 5、开启本地服务
 
-![](C:\Users\Maifeel\Desktop\本地预览.png)
+![](https://img-blog.csdnimg.cn/20181103004609249.png)
 
 
 
@@ -55,8 +53,6 @@ Hexo的可视化界面，摆脱命令行。
 | 提交仓库           | hexo d               |
 | 本地预览           | hexo s               |
 | 退出               | 退出本程序           |
-
-
 
 ## 五、使用
 
