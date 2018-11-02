@@ -159,9 +159,8 @@ class Hexo:
 
     def exec_cmd(self, command):
         os.chdir(self.path)
-        if command == 's':
-            self.kill_port(4000)
-        os.system(Hexo.command_dict[command])
+        if command != 's':
+            os.system(Hexo.command_dict[command])
         self.over = tkinter.Toplevel()
         self.over.overrideredirect(True)
         self.over.wm_attributes('-topmost', 1)
@@ -184,6 +183,12 @@ class Hexo:
         tkinter.Frame(self.over, height=20).grid(row=4, column=3)  # 留白好看
 
         tkinter.Button(self.over, text=' 确 定 ', command=lambda: self.over.destroy()).grid(row=5, column=2)
+
+        if command == 's':
+            self.kill_port(4000)
+            os.system(Hexo.command_dict[command])
+
+
 
     def continue_publish(self):
         self.n()
@@ -229,7 +234,7 @@ class Hexo:
         global x, y
         new_x = (event.x - x) + self.over.winfo_x()
         new_y = (event.y - y) + self.over.winfo_y()
-        s = "254x110+" + str(new_x) + "+" + str(new_y)
+        s = "214x110+" + str(new_x) + "+" + str(new_y)
         self.over.geometry(s)
 
 
