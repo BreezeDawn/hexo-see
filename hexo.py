@@ -5,8 +5,9 @@ from threading import Thread
 
 
 class Hexo:
-    command_dict = {'g': 'hexo g', 's': 'hexo s', 'd': 'hexo d', 'clean': 'hexo clean'}
-    over_dict = {'g': '初始化成功~', 's': 'Hexo已开启~', 'd': 'Hexo已提交~', 'clean': 'Hexo已重置~'}
+    command_dict = {'g': 'hexo g', 's': 'hexo s', 'd': 'hexo d', 'clean': 'hexo clean',
+                    'not s': 'hexo clean'}
+    over_dict = {'g': '初始化成功~', 's': 'Hexo已开启~', 'd': 'Hexo已提交~', 'clean': 'Hexo已重置~', 'not s': '端口被占用\n可能已开启'}
 
     def __init__(self, blog_path):
         self.path = blog_path
@@ -104,7 +105,9 @@ class Hexo:
         tkinter.Button(self.pub_tk, text='放弃创建', command=lambda: self.pub_tk.destroy()).grid(row=11, column=2)
 
     def publish_blog(self, title_text, tags_text, cats_text):
-        title = title_text.get().replace(' ', '').replace('/', '-').replace('\\', '-').replace('：', '-').replace(':', '-').replace('*', '-').replace('?', '-').replace('<', '-').replace('>', '-').replace('<', '-').replace('|', '-')
+        title = title_text.get().replace(' ', '').replace('/', '-').replace('\\', '-').replace('：', '-').replace(':',
+                                                                                                                 '-').replace(
+            '*', '-').replace('?', '-').replace('<', '-').replace('>', '-').replace('<', '-').replace('|', '-')
         tags = [tag for tag in tags_text.get().split(' ') if tag != '']
         cats = [cat for cat in cats_text.get().split(' ') if cat != '']
 
@@ -159,12 +162,13 @@ class Hexo:
 
     def exec_cmd(self, command):
         os.chdir(self.path)
-        if command != 's':
-            os.system(Hexo.command_dict[command])
+        res = os.system(Hexo.command_dict[command])
+        if command == 's' and res != 0:
+            command = 'not s'
         self.over = tkinter.Toplevel()
         self.over.overrideredirect(True)
         self.over.wm_attributes('-topmost', 1)
-        self.over.geometry("214x110+%d+%d" % ((self.x - 260) // 2, (self.y - 110) // 2))
+        self.over.geometry("214x130+%d+%d" % ((self.x - 260) // 2, (self.y - 110) // 2))
         self.over.bind("<B1-Motion>", self.over_move)
         self.over.bind("<Button-1>", self.mouse)
 
@@ -173,36 +177,23 @@ class Hexo:
         tkinter.Frame(self.over, width=40, height=10, bg='blue').grid(row=1, column=4)
         tkinter.Frame(self.over, width=20, height=10).grid(row=1, column=1)
         tkinter.Frame(self.over, width=20, height=10).grid(row=1, column=3)
-        tkinter.Frame(self.over, width=40, height=10, bg='red').grid(row=3, column=0)
-        tkinter.Frame(self.over, width=40, height=10, bg='red').grid(row=3, column=4)
-        tkinter.Frame(self.over, width=10, height=40, bg='black').grid(row=5, column=0)
-        tkinter.Frame(self.over, width=10, height=40, bg='black').grid(row=5, column=4)
+        tkinter.Frame(self.over, width=20, height=40, ).grid(row=2, column=1)
+        tkinter.Frame(self.over, width=40, height=10, bg='red').grid(row=2, column=0)
+        tkinter.Frame(self.over, width=40, height=10, bg='red').grid(row=2, column=4)
+        tkinter.Frame(self.over, width=40, height=10, ).grid(row=3, column=4)
+
+        tkinter.Frame(self.over, width=10, height=40, bg='black').grid(row=6, column=0)
+        tkinter.Frame(self.over, width=10, height=40, bg='black').grid(row=6, column=4)
 
         tkinter.Label(self.over, text=Hexo.over_dict[command], font=('黑体', 12)).grid(row=2, column=2)
 
         tkinter.Frame(self.over, height=20).grid(row=4, column=3)  # 留白好看
 
-        tkinter.Button(self.over, text=' 确 定 ', command=lambda: self.over.destroy()).grid(row=5, column=2)
-
-        if command == 's':
-            self.kill_port(4000)
-            os.system(Hexo.command_dict[command])
-
-
+        tkinter.Button(self.over, text=' 确 定 ', command=lambda: self.over.destroy()).grid(row=6, column=2)
 
     def continue_publish(self):
         self.n()
         self.warn.destroy()
-
-    @staticmethod
-    def kill_port(port):
-        # 查找端口的pid
-        find_port = 'netstat -aon | findstr %s' % port
-        result = os.popen(find_port)
-        pid = result.read().split(' ')[-1]
-        # 占用端口的pid
-        find_kill = 'taskkill -f -pid %s' % pid
-        os.popen(find_kill)
 
     @staticmethod
     def mouse(event):
@@ -234,7 +225,7 @@ class Hexo:
         global x, y
         new_x = (event.x - x) + self.over.winfo_x()
         new_y = (event.y - y) + self.over.winfo_y()
-        s = "214x110+" + str(new_x) + "+" + str(new_y)
+        s = "214x130+" + str(new_x) + "+" + str(new_y)
         self.over.geometry(s)
 
 
